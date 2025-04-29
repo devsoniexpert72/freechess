@@ -1,11 +1,11 @@
 # WintrCat's Game Report
 
-Generate classifications for your Chess moves, for free. Available @ [chess.wintrcat.uk](https://chess.wintrcat.uk/)
+**ABANDONED**<br>
+Freechess is an abandoned project and no longer maintained - it'll be kept up so the code is available to everyone.
+
+Generate classifications for your Chess moves, for free.
 <br><br>
 Enter a game by its PGN or pick a game from your Chess.com / Lichess.org account and have it analysed so that you can see where your mistakes and brilliancies are.
-
-**ANNOUNCEMENT**<br>
-Freechess is currently closed to further contributions - we are working on rebuilding the website from the ground up :)
 
 ## Running locally
 ### Prerequisites
