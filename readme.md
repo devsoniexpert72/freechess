@@ -3,6 +3,8 @@
 **ABANDONED**<br>
 Freechess is an abandoned project and no longer maintained - it'll be kept up so the code is available to everyone.
 
+The new website, [WintrChess](https://wintrchess.com/), is [open-source](https://github.com/wintrcat/wintrchess)!
+
 Generate classifications for your Chess moves, for free.
 <br><br>
 Enter a game by its PGN or pick a game from your Chess.com / Lichess.org account and have it analysed so that you can see where your mistakes and brilliancies are.
