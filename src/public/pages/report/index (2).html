@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Chess Game Report - Professional Analysis Tool</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="♟️ Professional Chess Game Analysis">
+    <meta property="og:url" content="https://chess.wintrcat.uk/">
+    <meta property="og:image" content="/static/media/brilliant.png">
+    <meta property="og:description" content="Advanced chess game analysis to identify mistakes, brilliancies, and improve your play.">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Google AdSense -->
+    <meta name="google-adsense-account" content="ca-pub-3914142339921252">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/index.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/announcement.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/board.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/gameselect.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/reviewpanel.css">
+    <link rel="stylesheet" href="/static/pages/report/styles/report.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/media/favicon-freechess.ico" type="image/x-icon">
+    
+    <!-- Audio Elements for Chess Sounds -->
+    <audio id="sound-fx-move" class="sound-fx-board" src="/static/media/move.mp3" preload="none"></audio>
+    <audio id="sound-fx-capture" class="sound-fx-board" src="/static/media/capture.mp3" preload="none"></audio>
+    <audio id="sound-fx-check" class="sound-fx-board" src="/static/media/check.mp3" preload="none"></audio>
+    <audio id="sound-fx-castle" class="sound-fx-board" src="/static/media/castle.mp3" preload="none"></audio>
+    <audio id="sound-fx-promote" class="sound-fx-board" src="/static/media/promote.mp3" preload="none"></audio>
+    <audio id="sound-fx-game-end" class="sound-fx-board" src="/static/media/game_end.mp3" preload="none"></audio>
+    
+    <!-- External Scripts -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3914142339921252" crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js" defer></script>
+    <script src="https://kit.fontawesome.com/bb36c502e7.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Support Banner -->
+    <header id="announcement" role="banner" aria-label="Support banner">
+        <div class="wise-words">
+            <p>
+                <strong>Support free chess analysis for everyone</strong>
+                <i class="fa-solid fa-heart" style="color: #ffffff" aria-hidden="true"></i>
+            </p>
+        </div>
+        <nav class="wise-buttons" aria-label="Support links">
+            <a id="kofi-a" 
+               href="https://ko-fi.com/N4N7SORCC" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Support on Ko-fi">
+                <svg id="kofi" 
+                     fill="#ffffff" 
+                     width="24" 
+                     height="24" 
+                     viewBox="0 0 24 24" 
+                     role="img" 
+                     xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true">
+                    <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
+                </svg>
+                <span class="ad-text">Buy Me a Coffee</span>
+            </a>
+            <a id="discord-a" 
+               href="https://discord.com/invite/XxtsAzPyCb" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Join Discord community">
+                <i class="fa-brands fa-discord" style="color: #ffffff" aria-hidden="true"></i>
+                <span class="ad-text">Join Discord</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Application -->
+    <main id="review-container" class="center" role="main">
+        <!-- Chess Board Section -->
+        <section id="board-outer-container" class="center" aria-label="Chess board and evaluation">
+            <!-- Evaluation Bar -->
+            <aside aria-label="Position evaluation">
+                <svg id="evaluation-bar" 
+                     width="40" 
+                     height="730" 
+                     xmlns="http://www.w3.org/2000/svg" 
+                     role="img"
+                     aria-label="Evaluation bar showing position assessment">
+                    <rect id="black-rect" x="0" y="0" width="40" height="365" fill="#000000"/>
+                    <rect id="white-rect" x="0" y="365" width="40" height="365" fill="#ffffff"/>
+                    <text id="white-eval-text" x="20" y="720" fill="#000000" font-size="16" text-anchor="middle" aria-label="White evaluation">0.0</text>
+                    <text id="black-eval-text" x="20" y="20" fill="#ffffff" font-size="16" text-anchor="middle" aria-label="Black evaluation">0.0</text>
+                </svg>
+            </aside>
+
+            <!-- Board Container -->
+            <div id="board-inner-container" class="center">
+                <div id="top-player-profile" class="profile" aria-label="Black player information">
+                    Black Player (?)
+                </div>
+
+                <canvas id="board" 
+                        width="1280" 
+                        height="1280" 
+                        aria-label="Chess board"
+                        role="img">
+                    Your browser does not support the canvas element required for the chess board.
+                </canvas>
+
+                <div id="bottom-player-profile" class="profile" aria-label="White player information">
+                    White Player (?)
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Panel -->
+        <aside id="review-panel" role="complementary" aria-label="Game analysis panel">
+            <div id="review-panel-main">
+                <div id="review-panel-wrapper">
+                    <!-- Header -->
+                    <header>
+                        <h1 id="review-panel-title" class="logo white">
+                            <i class="knight fa-solid fa-chess-knight" style="color: #ffffff" aria-hidden="true"></i>
+                            Game Report
+                        </h1>
+                    </header>
+
+                    <!-- Game Input Section -->
+                    <section aria-label="Game input options">
+                        <div id="load-type-dropdown-container" class="white">
+                            <label for="load-type-dropdown" class="sr-only">Select input method</label>
+                            <select id="load-type-dropdown" aria-label="Choose how to load your game">
+                                <option value="pgn">PGN Format</option>
+                                <option value="chesscom">Chess.com Account</option>
+                                <option value="lichess">Lichess.org Account</option>
+                                <option value="json">JSON Format</option>
+                            </select>
+                        </div>
+
+                        <div id="gameInputContainer" class="gameInputContainer">
+                            <label for="pgn" class="sr-only">Enter PGN notation</label>
+                            <textarea id="pgn" 
+                                      class="white" 
+                                      cols="30" 
+                                      rows="10" 
+                                      spellcheck="false" 
+                                      placeholder="Paste your PGN notation here..."
+                                      aria-describedby="pgn-help">
+                            </textarea>
+                            <div id="pgn-help" class="sr-only">Enter the PGN notation of your chess game for analysis</div>
+                        </div>
+
+                        <div id="gameInputContainer2" class="gameInputContainer">
+                            <label for="chess-site-username" class="sr-only">Enter username</label>
+                            <textarea id="chess-site-username" 
+                                      class="white" 
+                                      spellcheck="false" 
+                                      maxlength="48" 
+                                      placeholder="Enter your username..."
+                                      aria-describedby="username-help">
+                            </textarea>
+                            <div id="username-help" class="sr-only">Enter your username from the selected chess platform</div>
+                            
+                            <button id="fetch-account-games-button" 
+                                    class="usernameVerifyBtn"
+                                    aria-label="Fetch games from account">
+                                <i class="usernameVerifyBtnIcon fa-solid fa-arrow-right" style="color: #ffffff" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <button id="review-button" 
+                                class="analyse"
+                                aria-describedby="analysis-help">
+                            <i class="mag fa-solid fa-magnifying-glass" style="color: #ffffff" aria-hidden="true"></i>
+                            <strong>Analyze Game</strong>
+                        </button>
+                        <div id="analysis-help" class="sr-only">Start the comprehensive analysis of your chess game</div>
+                    </section>
+
+                    <!-- Progress and Status -->
+                    <section aria-label="Analysis progress and status">
+                        <progress id="evaluation-progress-bar" 
+                                  max="100" 
+                                  aria-label="Analysis progress">
+                        </progress>
+
+                        <div id="status-message" role="status" aria-live="polite">
+                            <i class="fa-solid fa-circle-info" style="color: #ffffff" aria-hidden="true"></i>
+                        </div>
+
+                        <!-- reCAPTCHA -->
+                        <div class="g-recaptcha" 
+                             data-sitekey="6LeCaR8pAAAAAGUKVSuZgZ73Kie3j2arG3qE74jA" 
+                             data-theme="dark" 
+                             data-callback="report"
+                             aria-label="Please complete the CAPTCHA verification">
+                        </div>
+
+                        <div id="secondary-message" 
+                             class="white" 
+                             role="status" 
+                             aria-live="polite">
+                        </div>
+                    </section>
+
+                    <!-- Analysis Results -->
+                    <section id="report-cards" aria-label="Analysis results">
+                        <div class="accuracyHolder">
+                            <h2 id="accuracies-title" class="white">
+                                Game Accuracy
+                                <div class="accuracyDiv">
+                                    <span id="white-accuracy" class="accuracies" aria-label="White player accuracy">0%</span>
+                                    <span id="black-accuracy" class="accuracies" aria-label="Black player accuracy">0%</span>
+                                </div>
+                            </h2>
+                            <div id="opening-name" class="white" aria-label="Opening played"></div>
+                        </div>
+
+                        <div id="classification-count-container" aria-label="Move classifications"></div>
+                        
+                        <div id="classification-message-container" role="status">
+                            <img id="classification-icon" 
+                                 src="/static/media/book.png" 
+                                 height="25" 
+                                 alt="Classification icon"
+                                 loading="lazy">
+                            <span id="classification-message"></span>
+                        </div>
+
+                        <div id="top-alternative-message" role="status"></div>
+
+                        <section id="engine-suggestions" aria-label="Engine analysis">
+                            <h2 id="engine-suggestions-title" class="white">
+                                Engine Analysis:
+                            </h2>
+                        </section>
+
+                        <div id="evalgraph-container" class="report-card center" aria-label="Evaluation graph">
+                            <canvas id="evaluation-graph" 
+                                    height="100"
+                                    aria-label="Game evaluation over time">
+                                Evaluation graph not available
+                            </canvas>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Settings Panel -->
+                <section class="big-depth-container" aria-label="Analysis settings">
+                    <header class="depthTitle white">
+                        <i class="gear fa-solid fa-gear" style="color: #ffffff" aria-hidden="true"></i>
+                        <h3>Settings</h3>
+                    </header>
+
+                    <div class="badboystiff">
+                        <span>Show Arrows</span>
+                        <label class="toggle" for="suggestion-arrows-setting">
+                            <input id="suggestion-arrows-setting" 
+                                   type="checkbox"
+                                   aria-describedby="arrows-help">
+                            <div class="toggle__fill"></div>
+                        </label>
+                        <div id="arrows-help" class="sr-only">Toggle suggestion arrows on the board</div>
+                    </div>
+
+                    <div id="depth-slider-container">
+                        <label for="depth-slider" class="sr-only">Analysis depth</label>
+                        <input id="depth-slider" 
+                               type="range" 
+                               min="14" 
+                               max="20" 
+                               value="16"
+                               aria-describedby="depth-help">
+                        <span id="depth-counter" class="white" aria-label="Current analysis depth">
+                            16<i class="fa-solid fa-wind" style="color: #ffffff" aria-hidden="true"></i>
+                        </span>
+                        <div id="depth-help" class="sr-only">Adjust the depth of engine analysis (higher is more accurate but slower)</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Game Navigation Toolbar -->
+            <nav id="review-panel-toolbar" aria-label="Game navigation">
+                <div id="review-panel-toolbar-buttons" class="center" role="group" aria-label="Move navigation controls">
+                    <button id="flip-board-button" 
+                            class="fa-solid fa-repeat" 
+                            style="color: #ffffff"
+                            aria-label="Flip board perspective"
+                            data-tooltip="Flip board">
+                    </button>
+
+                    <button id="back-start-move-button" 
+                            class="fa-solid fa-backward-step" 
+                            style="color: #ffffff"
+                            aria-label="Go to game start"
+                            data-tooltip="First move">
+                    </button>
+
+                    <button id="back-move-button" 
+                            class="fa-solid fa-arrow-left" 
+                            style="color: #ffffff"
+                            aria-label="Previous move"
+                            data-tooltip="Previous move">
+                    </button>
+
+                    <button id="next-move-button" 
+                            class="fa-solid fa-arrow-right" 
+                            style="color: #ffffff"
+                            aria-label="Next move"
+                            data-tooltip="Next move">
+                    </button>
+
+                    <button id="go-end-move-button" 
+                            class="fa-solid fa-forward-step" 
+                            style="color: #ffffff"
+                            aria-label="Go to game end"
+                            data-tooltip="Last move">
+                    </button>
+
+                    <button id="save-analysis-button" 
+                            class="fa-solid fa-floppy-disk" 
+                            style="color: #ffffff"
+                            aria-label="Save analysis"
+                            data-tooltip="Save analysis">
+                    </button>
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer white privacyPolicyThingy">
+                    <p>
+                        Created by <strong>wintrcat</strong> • 
+                        <a href="/privacy" rel="noopener">Privacy Policy</a>
+                    </p>
+                </footer>
+            </nav>
+        </aside>
+    </main>
+
+    <!-- Game Selection Modal Container -->
+    <div id="game-select-menu-container" role="dialog" aria-hidden="true" aria-label="Game selection menu"></div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/static/scripts/SpeechBubble.js"></script>
+    <script src="/static/pages/report/scripts/sprites.js"></script>
+    <script src="/static/pages/report/scripts/evalbar.js"></script>
+    <script src="/static/pages/report/scripts/evalgraph.js"></script>
+    <script src="/static/pages/report/scripts/board.js"></script>
+    <script src="/static/pages/report/scripts/report.js"></script>
+    <script src="/static/pages/report/scripts/loadgame.js"></script>
+    <script src="/static/pages/report/scripts/engine.js"></script>
+    <script src="/static/pages/report/scripts/analysis.js"></script>
+    <script src="/static/pages/report/scripts/styles.js"></script>
+</body>
+</html>
